@@ -217,64 +217,8 @@ class StockHomeController extends StateXController {
   }
 }
 
-class _Widgets {
-  _Widgets(this.con) {
-    listTiles = _ListTiles(con);
-    _appBar = _AppBar(con);
-    _drawer = _Drawer(con);
-    _body = _Body(con);
-  }
-  StockHomeController con;
-  late _ListTiles listTiles;
-  late _AppBar _appBar;
-  late _Drawer _drawer;
-  late _Body _body;
-  late _FloatingActionButton _floatingButton;
-
-  Widget get drawer => _drawer.drawer;
-
-  Widget get body => _body.body;
-
-  PreferredSizeWidget get appBar =>
-      _isSearching ? con.buildSearchBar() : con.buildAppBar();
-
-  Widget get stockList => listTiles.stockList;
-
-  Widget get accountBalance => listTiles.accountBalance;
-
-  Widget get dumpConsole => listTiles.dumpConsole;
-
-  Widget get optimistic => listTiles.optimistic;
-
-  Widget get pessimistic => listTiles.pessimistic;
-
-  Widget get settings => listTiles.settings;
-
-  Widget get about => listTiles.about;
-
-  Widget get appBarTitle => _appBar.appBarTitle;
-
-  Widget get search => _appBar.search;
-
-  Widget get popMenu => _appBar.popMenu;
-
-  Widget get market => _appBar.market;
-
-  Widget get portfolio => _appBar.portfolio;
-
-  void didChangeDependencies() {
-    _floatingButton = _FloatingActionButton(con);
-    _appBar.stockStrings();
-  }
-
-  Widget get marketTab => con.buildStockTab(
-      con.context, StockHomeTab.market, AppStocks.stocks.allSymbols.toList());
-
-  Widget get portfolioTab => con.buildStockTab(
-      con.context, StockHomeTab.portfolio, con.portfolioSymbols);
-
-  _FloatingActionButton get floatingButton => _floatingButton;
-}
+///
+enum StockHomeTab { market, portfolio }
 
 class _AppBar {
   _AppBar(this.con) {
@@ -283,10 +227,23 @@ class _AppBar {
         con._handleStockMenu(con.context, value);
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<_StockMenuItem>>[
-        autoRefresh,
-        refresh,
-        increase,
-        decrease,
+        CheckedPopupMenuItem(
+          value: _StockMenuItem.autorefresh,
+          checked: _autorefresh,
+          child: const Text('Autorefresh'),
+        ),
+        const PopupMenuItem(
+          value: _StockMenuItem.refresh,
+          child: Text('Refresh'),
+        ),
+        const PopupMenuItem(
+          value: _StockMenuItem.speedUp,
+          child: Text('Increase animation speed'),
+        ),
+        const PopupMenuItem(
+          value: _StockMenuItem.speedDown,
+          child: Text('Decrease animation speed'),
+        ),
       ],
     );
 
@@ -311,136 +268,195 @@ class _AppBar {
     appBarTitle = Text(StockStrings.of(con.context).title());
   }
 
-  CheckedPopupMenuItem<_StockMenuItem> autoRefresh = CheckedPopupMenuItem(
-    value: _StockMenuItem.autorefresh,
-    checked: _autorefresh,
-    child: const Text('Autorefresh'),
-  );
+  // CheckedPopupMenuItem<_StockMenuItem> autoRefresh = CheckedPopupMenuItem(
+  //   value: _StockMenuItem.autorefresh,
+  //   checked: _autorefresh,
+  //   child: const Text('Autorefresh'),
+  // );
 
-  PopupMenuItem<_StockMenuItem> refresh = const PopupMenuItem(
-    value: _StockMenuItem.refresh,
-    child: Text('Refresh'),
-  );
+  // PopupMenuItem<_StockMenuItem> refresh = const PopupMenuItem(
+  //   value: _StockMenuItem.refresh,
+  //   child: Text('Refresh'),
+  // );
 
-  PopupMenuItem<_StockMenuItem> increase = const PopupMenuItem(
-    value: _StockMenuItem.speedUp,
-    child: Text('Increase animation speed'),
-  );
+  // PopupMenuItem<_StockMenuItem> increase = const PopupMenuItem(
+  //   value: _StockMenuItem.speedUp,
+  //   child: Text('Increase animation speed'),
+  // );
 
-  PopupMenuItem<_StockMenuItem> decrease = const PopupMenuItem(
-    value: _StockMenuItem.speedDown,
-    child: Text('Decrease animation speed'),
-  );
+  // PopupMenuItem<_StockMenuItem> decrease = const PopupMenuItem(
+  //   value: _StockMenuItem.speedDown,
+  //   child: Text('Decrease animation speed'),
+  // );
 }
 
-class _FloatingActionButton {
-  _FloatingActionButton(StockHomeController con) {
-    _createCompany = FloatingActionButton(
-      tooltip: 'Create company',
-//      backgroundColor: Theme.of(con.context).accentColor,
-      onPressed: () {
-        showModalBottomSheet<void>(
-          context: con.context,
-          builder: (BuildContext context) => _CreateCompanySheet(),
-        );
-      },
-      child: const Icon(Icons.add),
-    );
+// class _FloatingActionButton {
+//   _FloatingActionButton(StockHomeController con) {
+//     _createCompany = FloatingActionButton(
+//       tooltip: 'Create company',
+// //      backgroundColor: Theme.of(con.context).accentColor,
+//       onPressed: () {
+//         showModalBottomSheet<void>(
+//           context: con.context,
+//           builder: (BuildContext context) => const _CreateCompanySheet(),
+//         );
+//       },
+//       child: const Icon(Icons.add),
+//     );
+//   }
+//   // FloatingActionButton get createCompany => _createCompany;
+//   // late FloatingActionButton _createCompany;
+// }
+
+class _Widgets {
+  _Widgets(this.con) {
+    // An AppBar class
+    _appBar = _AppBar(con);
+
+//    _body = _Body(con);
   }
-  FloatingActionButton get createCompany => _createCompany;
-  late FloatingActionButton _createCompany;
-}
-
-class _CreateCompanySheet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const <Widget>[
-        TextField(
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Company Name',
-          ),
-        ),
-        Text('(This demo is not yet complete.)'),
-        // For example, we could add a button that actually updates the list
-        // and then contacts the server, etc.
-      ],
-    );
-  }
-}
-
-class _ListTiles {
-  _ListTiles(this.con);
   StockHomeController con;
+  // late _ListTiles listTiles;
+  late _AppBar _appBar;
+//  late _Body _body;
+  // late _FloatingActionButton _floatingButton;
 
-  ListTile stockList = const ListTile(
-    leading: Icon(Icons.assessment),
-    title: Text('Stock List'),
-    selected: true,
-  );
+//  Widget get body => _body.body;
 
-  ListTile accountBalance = const ListTile(
-    leading: Icon(Icons.account_balance),
-    title: Text('Account Balance'),
-    enabled: false,
-  );
+  PreferredSizeWidget get appBar =>
+      _isSearching ? con.buildSearchBar() : con.buildAppBar();
 
-  ListTile dumpConsole = ListTile(
-    leading: const Icon(Icons.dvr),
-    title: const Text('Dump App to Console'),
-    onTap: () {
-      try {
-        debugDumpApp();
-        debugDumpRenderTree();
-        debugDumpLayerTree();
-        debugDumpSemanticsTree(DebugSemanticsDumpOrder.traversalOrder);
-      } catch (e, stack) {
-        debugPrint('Exception while dumping app:\n$e\n$stack');
-      }
-    },
-  );
+  // Widget get stockList => listTiles.stockList;
 
-  ListTile get optimistic => ListTile(
-        leading: const Icon(Icons.thumb_up),
-        title: const Text('Optimistic'),
-        trailing: Radio<StockMode>(
-          value: StockMode.optimistic,
-          groupValue: AppStocks.stockMode,
-          onChanged: con.handleStockModeChange,
-        ),
-        onTap: () {
-          con.handleStockModeChange(StockMode.optimistic);
-          con.state?.setState(() {});
-        },
-      );
+  // Widget get accountBalance => listTiles.accountBalance;
 
-  ListTile get pessimistic => ListTile(
-        leading: const Icon(Icons.thumb_down),
-        title: const Text('Pessimistic'),
-        trailing: Radio<StockMode>(
-          value: StockMode.pessimistic,
-          groupValue: AppStocks.stockMode,
-          onChanged: con.handleStockModeChange,
-        ),
-        onTap: () {
-          con.handleStockModeChange(StockMode.pessimistic);
-          con.state?.setState(() {});
-        },
-      );
+  // Widget get dumpConsole => listTiles.dumpConsole;
 
-  ListTile get settings => ListTile(
-        leading: const Icon(Icons.settings),
-        title: const Text('Settings'),
-        onTap: () => con.onTap.settings(con.context),
-      );
+  // Widget get optimistic => listTiles.optimistic;
 
-  ListTile get about => ListTile(
-        leading: const Icon(Icons.help),
-        title: const Text('About'),
-        onTap: () => con.onTap.about(con.context),
-      );
+  // Widget get pessimistic => listTiles.pessimistic;
+  //
+  // Widget get settings => listTiles.settings;
+  //
+  // Widget get about => listTiles.about;
+
+  Widget get appBarTitle => _appBar.appBarTitle;
+
+  Widget get search => _appBar.search;
+
+  Widget get popMenu => _appBar.popMenu;
+
+  Widget get market => _appBar.market;
+
+  Widget get portfolio => _appBar.portfolio;
+
+  // Widget get createCompany => const _CreateCompanySheet();
+
+  void didChangeDependencies() {
+    // _floatingButton = _FloatingActionButton(con);
+    _appBar.stockStrings();
+  }
+
+  Widget get marketTab => con.buildStockTab(
+      con.context, StockHomeTab.market, AppStocks.stocks.allSymbols.toList());
+
+  Widget get portfolioTab => con.buildStockTab(
+      con.context, StockHomeTab.portfolio, con.portfolioSymbols);
+
+// _FloatingActionButton get floatingButton => _floatingButton;
 }
+
+// class _CreateCompanySheet extends StatelessWidget {
+//   const _CreateCompanySheet({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: const <Widget>[
+//         TextField(
+//           autofocus: true,
+//           decoration: InputDecoration(
+//             hintText: 'Company Name',
+//           ),
+//         ),
+//         Text('(This demo is not yet complete.)'),
+//         // For example, we could add a button that actually updates the list
+//         // and then contacts the server, etc.
+//       ],
+//     );
+//   }
+// }
+
+// class _ListTiles {
+//   _ListTiles(this.con);
+//   StockHomeController con;
+
+// ListTile stockList = const ListTile(
+//   leading: Icon(Icons.assessment),
+//   title: Text('Stock List'),
+//   selected: true,
+// );
+
+// ListTile accountBalance = const ListTile(
+//   leading: Icon(Icons.account_balance),
+//   title: Text('Account Balance'),
+//   enabled: false,
+// );
+
+// ListTile dumpConsole = ListTile(
+//   leading: const Icon(Icons.dvr),
+//   title: const Text('Dump App to Console'),
+//   onTap: () {
+//     try {
+//       debugDumpApp();
+//       debugDumpRenderTree();
+//       debugDumpLayerTree();
+//       debugDumpSemanticsTree(DebugSemanticsDumpOrder.traversalOrder);
+//     } catch (e, stack) {
+//       debugPrint('Exception while dumping app:\n$e\n$stack');
+//     }
+//   },
+// );
+//
+// ListTile get optimistic => ListTile(
+//       leading: const Icon(Icons.thumb_up),
+//       title: const Text('Optimistic'),
+//       trailing: Radio<StockMode>(
+//         value: StockMode.optimistic,
+//         groupValue: AppStocks.stockMode,
+//         onChanged: con.handleStockModeChange,
+//       ),
+//       onTap: () {
+//         con.handleStockModeChange(StockMode.optimistic);
+//         con.state?.setState(() {});
+//       },
+//     );
+//
+// ListTile get pessimistic => ListTile(
+//       leading: const Icon(Icons.thumb_down),
+//       title: const Text('Pessimistic'),
+//       trailing: Radio<StockMode>(
+//         value: StockMode.pessimistic,
+//         groupValue: AppStocks.stockMode,
+//         onChanged: con.handleStockModeChange,
+//       ),
+//       onTap: () {
+//         con.handleStockModeChange(StockMode.pessimistic);
+//         con.state?.setState(() {});
+//       },
+//     );
+//
+// ListTile get settings => ListTile(
+//       leading: const Icon(Icons.settings),
+//       title: const Text('Settings'),
+//       onTap: () => con.onTap.settings(con.context),
+//     );
+//
+// ListTile get about => ListTile(
+//       leading: const Icon(Icons.help),
+//       title: const Text('About'),
+//       onTap: () => con.onTap.about(con.context),
+//     );
+// }
 
 ///
 class OnTaps {
@@ -486,41 +502,41 @@ class OnTaps {
   }
 }
 
-class _Drawer {
-  _Drawer(this.con);
-  StockHomeController con;
+// class _Drawer {
+//   _Drawer(this.con);
+//   StockHomeController con;
+//
+//   Widget get drawer => Drawer(
+//         child: ListView(
+//           dragStartBehavior: DragStartBehavior.down,
+//           children: <Widget>[
+//             const DrawerHeader(child: Center(child: Text('Stocks'))),
+//             con.widget.stockList,
+//             con.widget.accountBalance,
+//             con.widget.dumpConsole,
+//             const Divider(),
+//             con.widget.optimistic,
+//             con.widget.pessimistic,
+//             const Divider(),
+//             con.widget.settings,
+//             con.widget.about,
+//           ],
+//         ),
+//       );
+// }
 
-  Widget get drawer => Drawer(
-        child: ListView(
-          dragStartBehavior: DragStartBehavior.down,
-          children: <Widget>[
-            const DrawerHeader(child: Center(child: Text('Stocks'))),
-            con.widget.stockList,
-            con.widget.accountBalance,
-            con.widget.dumpConsole,
-            const Divider(),
-            con.widget.optimistic,
-            con.widget.pessimistic,
-            const Divider(),
-            con.widget.settings,
-            con.widget.about,
-          ],
-        ),
-      );
-}
-
-class _Body {
-  _Body(this.con);
-  StockHomeController con;
-
-  Widget get body => TabBarView(
-        dragStartBehavior: DragStartBehavior.down,
-        children: <Widget>[
-          con.widget.marketTab,
-          con.widget.portfolioTab,
-        ],
-      );
-}
+// class _Body {
+//   _Body(this.con);
+//   StockHomeController con;
+//
+//   Widget get body => TabBarView(
+//         dragStartBehavior: DragStartBehavior.down,
+//         children: <Widget>[
+//           con.widget.marketTab,
+//           con.widget.portfolioTab,
+//         ],
+//       );
+// }
 
 class _NotImplementedDialog extends StatelessWidget {
   @override
