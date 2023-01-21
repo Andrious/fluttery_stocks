@@ -6,14 +6,21 @@ import 'package:stocks/src/controller.dart';
 class AppStocks extends AppController {
   ///
   factory AppStocks([StateX? state]) => _this ??= AppStocks._(state);
-  AppStocks._([StateX? state]) : super(state);
+  AppStocks._([StateX? state]) : super(state) {
+    _stocks = StockData();
+  }
   static AppStocks? _this;
+
+  @override
+  Future<bool> initAsync() async {
+    // Retrieve its data
+    return _stocks.initAsync();
+  }
 
   @override
   void initState() {
     super.initState();
     _state = state as AppState;
-    _stocks = StockData();
   }
 
   static AppState? _state;
@@ -43,7 +50,7 @@ class AppStocks extends AppController {
 
   ///
   static set theme(ThemeData v) {
-    App.themeData = v;
+    _state?.theme = v;
     _state?.refresh();
   }
 
@@ -51,7 +58,7 @@ class AppStocks extends AppController {
   static StockMode get stockMode => _stockMode;
   static set stockMode(StockMode v) {
     _stockMode = v;
-    App.themeData = theme;
+    _state?.theme = theme;
     _state?.refresh();
   }
 

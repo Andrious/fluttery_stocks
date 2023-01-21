@@ -13,10 +13,10 @@ class StockSettings extends StatefulWidget {
 
 ///
 class _StockSettingsState extends StateX<StockSettings> {
-  _StockSettingsState() : super(Settings()) {
-    con = controller as Settings;
+  _StockSettingsState() : super(DevTools()) {
+    con = controller as DevTools;
   }
-  late Settings con;
+  late DevTools con;
 
   // Flag set when the App's settings are to be changed.
   bool changed = false;
@@ -25,7 +25,7 @@ class _StockSettingsState extends StateX<StockSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Development Tools'),
       ),
       body: _buildSettingsPane(context),
     );
@@ -33,27 +33,27 @@ class _StockSettingsState extends StateX<StockSettings> {
 
   ///
   Widget _buildSettingsPane(BuildContext context) {
-    final List<Widget> rows = <Widget>[
-      ListTile(
-        leading: const Icon(Icons.thumb_up),
-        title: const Text('Everything is awesome'),
-        onTap: confirmOptimismChange,
-        trailing: Checkbox(
-          value: AppStocks.stockMode == StockMode.optimistic,
-          onChanged: (bool? value) => confirmOptimismChange(),
-        ),
-      ),
-      ListTile(
-        leading: const Icon(Icons.backup),
-        title: const Text('Back up stock list to the cloud'),
-        onTap: () {
-          _handleBackupChanged(!(AppStocks.backupMode == BackupMode.enabled));
-        },
-        trailing: Switch(
-          value: AppStocks.backupMode == BackupMode.enabled,
-          onChanged: _handleBackupChanged,
-        ),
-      ),
+    final List<Widget> widgets = <Widget>[
+      // ListTile(
+      //   leading: const Icon(Icons.thumb_up),
+      //   title: const Text('Everything is awesome'),
+      //   onTap: confirmOptimismChange,
+      //   trailing: Checkbox(
+      //     value: AppStocks.stockMode == StockMode.optimistic,
+      //     onChanged: (bool? value) => confirmOptimismChange(),
+      //   ),
+      // ),
+      // ListTile(
+      //   leading: const Icon(Icons.backup),
+      //   title: const Text('Back up stock list to the cloud'),
+      //   onTap: () {
+      //     _handleBackupChanged(!(AppStocks.backupMode == BackupMode.enabled));
+      //   },
+      //   trailing: Switch(
+      //     value: AppStocks.backupMode == BackupMode.enabled,
+      //     onChanged: _handleBackupChanged,
+      //   ),
+      // ),
       ListTile(
         leading: const Icon(Icons.picture_in_picture),
         title: const Text('Show rendering performance overlay'),
@@ -69,7 +69,7 @@ class _StockSettingsState extends StateX<StockSettings> {
       ),
       ListTile(
         leading: const Icon(Icons.accessibility),
-        title: const Text('Show semantics overlay'),
+        title: const Text('Show accessibility information'),
         onTap: () {
           con.showSemanticsDebugger = !con.showSemanticsDebugger!;
         },
@@ -80,13 +80,29 @@ class _StockSettingsState extends StateX<StockSettings> {
           },
         ),
       ),
+      ListTile(
+        leading: const Icon(Icons.bug_report),
+        title: const Text('Show DEBUG banner'),
+        onTap: () {
+          con.debugShowCheckedModeBanner = !con.debugShowCheckedModeBanner!;
+        },
+        trailing: Switch(
+          value: con.debugShowCheckedModeBanner!,
+          onChanged: (bool value) {
+            con.debugShowCheckedModeBanner = value;
+          },
+        ),
+      ),
     ];
+    // An approach to determine if running in your IDE or not is the assert()
+    // i.e. When your in your Debugger or not.
+    // The compiler removes assert functions and their content when in Production.
     assert(() {
       // material grid and size construction lines are only available in checked mode
-      rows.addAll(<Widget>[
+      widgets.addAll(<Widget>[
         ListTile(
           leading: const Icon(Icons.border_clear),
-          title: const Text('Show material grid (for debugging)'),
+          title: const Text('Show material grid'),
           onTap: () {
             con.debugShowMaterialGrid = !con.debugShowMaterialGrid!;
           },
@@ -99,7 +115,7 @@ class _StockSettingsState extends StateX<StockSettings> {
         ),
         ListTile(
           leading: const Icon(Icons.border_all),
-          title: const Text('Show construction lines (for debugging)'),
+          title: const Text('Paint construction lines'),
           onTap: () {
             con.debugPaintSizeEnabled = !con.debugPaintSizeEnabled!;
           },
@@ -112,7 +128,7 @@ class _StockSettingsState extends StateX<StockSettings> {
         ),
         ListTile(
           leading: const Icon(Icons.format_color_text),
-          title: const Text('Show baselines (for debugging)'),
+          title: const Text('Show character baselines'),
           onTap: () {
             con.debugPaintBaselinesEnabled = !con.debugPaintBaselinesEnabled!;
           },
@@ -125,7 +141,7 @@ class _StockSettingsState extends StateX<StockSettings> {
         ),
         ListTile(
           leading: const Icon(Icons.filter_none),
-          title: const Text('Show layer boundaries (for debugging)'),
+          title: const Text('Highlight layer boundaries'),
           onTap: () {
             con.debugPaintLayerBordersEnabled =
                 !con.debugPaintLayerBordersEnabled!;
@@ -139,7 +155,7 @@ class _StockSettingsState extends StateX<StockSettings> {
         ),
         ListTile(
           leading: const Icon(Icons.mouse),
-          title: const Text('Show pointer hit-testing (for debugging)'),
+          title: const Text('Flash interface taps'),
           onTap: () {
             con.debugPaintPointersEnabled = !con.debugPaintPointersEnabled!;
           },
@@ -152,7 +168,7 @@ class _StockSettingsState extends StateX<StockSettings> {
         ),
         ListTile(
           leading: const Icon(Icons.gradient),
-          title: const Text('Show repaint rainbow (for debugging)'),
+          title: const Text('Highlight repainted layers'),
           onTap: () {
             con.debugRepaintRainbowEnabled = !con.debugRepaintRainbowEnabled!;
           },
@@ -168,7 +184,7 @@ class _StockSettingsState extends StateX<StockSettings> {
     }());
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 20),
-      children: rows,
+      children: widgets,
     );
   }
 
@@ -211,8 +227,8 @@ class _StockSettingsState extends StateX<StockSettings> {
     AppStocks.stockMode = value ? StockMode.optimistic : StockMode.pessimistic;
   }
 
-  void _handleBackupChanged(bool? value) {
-    value ??= true;
-    AppStocks.backupMode = value ? BackupMode.enabled : BackupMode.disabled;
-  }
+  // void _handleBackupChanged(bool? value) {
+  //   value ??= true;
+  //   AppStocks.backupMode = value ? BackupMode.enabled : BackupMode.disabled;
+  // }
 }

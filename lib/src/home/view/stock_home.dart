@@ -73,10 +73,21 @@ class _StockHomeState extends StateX<StockHome> {
 
   /// The Drawer for the interface
   Widget get _drawer => Drawer(
+        elevation: 12,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: ListView(
           dragStartBehavior: DragStartBehavior.down,
           children: <Widget>[
-            const DrawerHeader(child: Center(child: Text('Stocks'))),
+            DrawerHeader(
+              child: Center(
+                child: Text(
+                  'Stocks',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+            ),
             const ListTile(
               leading: Icon(Icons.assessment),
               title: Text('Stock List'),
@@ -87,21 +98,28 @@ class _StockHomeState extends StateX<StockHome> {
               title: Text('Account Balance'),
               enabled: false,
             ),
-            ListTile(
-              leading: const Icon(Icons.dvr),
-              title: const Text('Dump App to Console'),
-              onTap: () {
-                try {
-                  debugDumpApp();
-                  debugDumpRenderTree();
-                  debugDumpLayerTree();
-                  debugDumpSemanticsTree(
-                      DebugSemanticsDumpOrder.traversalOrder);
-                } catch (e, stack) {
-                  debugPrint('Exception while dumping app:\n$e\n$stack');
-                }
-              },
-            ),
+            if (App.inDebugger) // Display only on the developer's computer.
+              ListTile(
+                leading: const Icon(Icons.dvr),
+                title: const Text('Printout App Information'),
+                onTap: () => _printAppInfo(context),
+                // onTap: () {
+                //   try {
+                //     // Print a string representation of the currently running app.
+                //     debugDumpApp();
+                //     // Prints a textual representation of the entire render tree.
+                //     debugDumpRenderTree();
+                //     // Prints a textual representation of the entire layer tree
+                //     debugDumpLayerTree();
+                //     // Prints a textual representation of the entire semantics tree.
+                //     debugDumpSemanticsTree(
+                //         DebugSemanticsDumpOrder.traversalOrder);
+                //   } catch (e, stack) {
+                //     debugPrint(
+                //         'Exception while printing app info:\n$e\n$stack');
+                //   }
+                // },
+              ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.thumb_up),
@@ -111,10 +129,7 @@ class _StockHomeState extends StateX<StockHome> {
                 groupValue: c.AppStocks.stockMode,
                 onChanged: con.handleStockModeChange,
               ),
-              onTap: () {
-                con.handleStockModeChange(StockMode.optimistic);
-                con.state?.setState(() {});
-              },
+              onTap: () => con.handleStockModeChange(StockMode.optimistic),
             ),
             ListTile(
               leading: const Icon(Icons.thumb_down),
@@ -124,21 +139,19 @@ class _StockHomeState extends StateX<StockHome> {
                 groupValue: c.AppStocks.stockMode,
                 onChanged: con.handleStockModeChange,
               ),
-              onTap: () {
-                con.handleStockModeChange(StockMode.pessimistic);
-                con.state?.setState(() {});
-              },
+              onTap: () => con.handleStockModeChange(StockMode.pessimistic),
             ),
             const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () => con.onTap.settings(con.context),
-            ),
+            if (App.inDebugger)
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Debug Tools'),
+                onTap: () => con.onTap.devTools(context),
+              ),
             ListTile(
               leading: const Icon(Icons.help),
               title: const Text('About'),
-              onTap: () => con.onTap.about(con.context),
+              onTap: () => con.onTap.about(context),
             ),
           ],
         ),
@@ -265,4 +278,129 @@ class _StockHomeState extends StateX<StockHome> {
   //         body: con.widget.body,
   //       ),
   //     );
+
+  Future<void> _printAppInfo(BuildContext context) async {
+    //
+    String infoType = 'app';
+
+    final info = await showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          App.dependOnInheritedWidget(context);
+          return AlertDialog(
+            title: Text(
+              'App Info',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            titlePadding: const EdgeInsets.only(left: 10, top: 20),
+            contentPadding: const EdgeInsets.all(20),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, '');
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, infoType);
+                },
+                child: const Text('OK'),
+              )
+            ],
+            content: SizedBox(
+              width: 80.w, // % of screen width
+              height: 50.h, // % of screen height
+              child: Column(children: [
+                const Text('Textual representation of this app:'),
+                const Divider(),
+                Flexible(
+                  child: ListTile(
+                    leading: Radio<String>(
+                      value: 'app',
+                      groupValue: infoType,
+                      onChanged: (v) => infoType = v!,
+                    ),
+                    title: const Text('App representation'),
+                  ),
+                ),
+                Flexible(
+                  child: ListTile(
+                    leading: Radio<String>(
+                      value: 'render',
+                      groupValue: infoType,
+                      onChanged: (v) => infoType = v!,
+                    ),
+                    title: const Text('Render Tree'),
+                  ),
+                ),
+                Flexible(
+                  child: ListTile(
+                    leading: Radio<String>(
+                      value: 'layer',
+                      groupValue: infoType,
+                      onChanged: (v) => infoType = v!,
+                    ),
+                    title: const Text('Layer Tree'),
+                  ),
+                ),
+                Flexible(
+                  child: ListTile(
+                    leading: Radio<String>(
+                      value: 'semantics',
+                      groupValue: infoType,
+                      onChanged: (v) => infoType = v!,
+                    ),
+                    title: const Text('Semantics Tree'),
+                  ),
+                ),
+                const Text('To view Log In Android Studio:'),
+                const Text('Help Menu -> Show log in Explorer (for Windows)'),
+                const Text('Help Menu -> Show log in Finder (for Mac users)'),
+                const Text('OUTPUTS ALSO TO CONSOLE'),
+              ]),
+            ),
+          );
+        });
+
+    Function? func;
+
+    switch (info) {
+      case 'app':
+        // Print a string representation of the currently running app.
+        // https://docs.flutter.dev/testing/code-debugging#widget-tree
+        func = debugDumpApp;
+        break;
+      case 'render':
+        // Prints a textual representation of the entire render tree.
+        // https://docs.flutter.dev/testing/code-debugging#render-tree
+        func = debugDumpRenderTree;
+        break;
+      case 'layer':
+        // Prints a textual representation of the entire layer tree
+        // https://docs.flutter.dev/testing/code-debugging#layer-tree
+        func = debugDumpLayerTree;
+        break;
+      case 'semantics':
+        // Prints a textual representation of the entire semantics tree.
+        // https://docs.flutter.dev/testing/code-debugging#semantics-tree
+        func = debugDumpSemanticsTree;
+        break;
+    }
+
+    try {
+      if (func != null) {
+        if (func == debugDumpSemanticsTree) {
+          func(DebugSemanticsDumpOrder.traversalOrder);
+        } else {
+          func();
+        }
+      }
+    } catch (e, stack) {
+      debugPrint('Exception while printing app info:\n$e\n$stack');
+    }
+  }
 }

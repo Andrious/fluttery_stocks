@@ -5,11 +5,11 @@ import 'package:stocks/src/view.dart';
 import 'package:stocks/src/controller.dart';
 
 ///
-class Settings extends StateXController {
+class DevTools extends StateXController {
   ///
-  factory Settings() => _this ??= Settings._();
-  Settings._();
-  static Settings? _this;
+  factory DevTools() => _this ??= DevTools._();
+  DevTools._();
+  static DevTools? _this;
 
   @override
   void initState() {
@@ -20,10 +20,9 @@ class Settings extends StateXController {
 
   // The App's State object
   AppState? _state;
+
   // Indicates which settings have changed.
   final _settings = <String>{};
-
-  bool _debugShowMaterialGrid = false;
 
   /// The settings were changed
   bool isChanged() {
@@ -41,19 +40,47 @@ class Settings extends StateXController {
     return refreshed;
   }
 
+  /// Record the current switch setting
+  // ignore: avoid_positional_boolean_parameters
+  bool noteChange(String switchName, bool? switchValue) {
+    final noted = switchValue != null;
+    if (noted) {
+      //
+      if (_settings.contains(switchName)) {
+        _settings.remove(switchName);
+      } else {
+        _settings.add(switchName);
+      }
+      // If the setting was on and running but now turned off
+      if (switchValue == false && _settings.contains(switchName)) {
+        _settings.remove(switchName);
+        // Refresh the app now to rid of any debug displays
+        _state?.setState(() {});
+      }
+    }
+    return noted;
+  }
+
   ///
-  bool? get debugShowMaterialGrid => _debugShowMaterialGrid;
+  bool? get debugShowCheckedModeBanner => _state?.debugShowCheckedModeBanner;
+  set debugShowCheckedModeBanner(bool? v) {
+    //
+    setState(() {});
+
+    _state?.debugShowCheckedModeBanner = v ?? false;
+
+    noteChange('debugShowCheckedModeBanner', v);
+  }
+
+  ///
+  bool? get debugShowMaterialGrid => _state?.debugShowMaterialGrid;
   set debugShowMaterialGrid(bool? v) {
     //
     setState(() {});
 
-    _state?.debugShowMaterialGrid = _debugShowMaterialGrid = v ?? false;
+    _state?.debugShowMaterialGrid = v ?? false;
 
-    if (_settings.contains('debugShowMaterialGrid')) {
-      _settings.remove('debugShowMaterialGrid');
-    } else {
-      _settings.add('debugShowMaterialGrid');
-    }
+    noteChange('debugShowMaterialGrid', v);
   }
 
   ///
@@ -64,11 +91,7 @@ class Settings extends StateXController {
 
     _state?.debugPaintSizeEnabled = v ?? false;
 
-    if (_settings.contains('debugPaintSizeEnabled')) {
-      _settings.remove('debugPaintSizeEnabled');
-    } else {
-      _settings.add('debugPaintSizeEnabled');
-    }
+    noteChange('debugPaintSizeEnabled', v);
   }
 
   ///
@@ -79,11 +102,7 @@ class Settings extends StateXController {
 
     _state?.debugPaintBaselinesEnabled = v ?? false;
 
-    if (_settings.contains('debugPaintBaselinesEnabled')) {
-      _settings.remove('debugPaintBaselinesEnabled');
-    } else {
-      _settings.add('debugPaintBaselinesEnabled');
-    }
+    noteChange('debugPaintBaselinesEnabled', v);
   }
 
   ///
@@ -95,11 +114,7 @@ class Settings extends StateXController {
 
     _state?.debugPaintLayerBordersEnabled = v ?? false;
 
-    if (_settings.contains('debugPaintLayerBordersEnabled')) {
-      _settings.remove('debugPaintLayerBordersEnabled');
-    } else {
-      _settings.add('debugPaintLayerBordersEnabled');
-    }
+    noteChange('debugPaintLayerBordersEnabled', v);
   }
 
   ///
@@ -110,11 +125,7 @@ class Settings extends StateXController {
 
     _state?.debugPaintPointersEnabled = v ?? false;
 
-    if (_settings.contains('debugPaintPointersEnabled')) {
-      _settings.remove('debugPaintPointersEnabled');
-    } else {
-      _settings.add('debugPaintPointersEnabled');
-    }
+    noteChange('debugPaintPointersEnabled', v);
   }
 
   ///
@@ -125,11 +136,7 @@ class Settings extends StateXController {
 
     _state?.debugRepaintRainbowEnabled = v ?? false;
 
-    if (_settings.contains('debugRepaintRainbowEnabled')) {
-      _settings.remove('debugRepaintRainbowEnabled');
-    } else {
-      _settings.add('debugRepaintRainbowEnabled');
-    }
+    noteChange('debugRepaintRainbowEnabled', v);
   }
 
   ///
@@ -140,11 +147,7 @@ class Settings extends StateXController {
 
     _state?.showPerformanceOverlay = v ?? false;
 
-    if (_settings.contains('showPerformanceOverlay')) {
-      _settings.remove('showPerformanceOverlay');
-    } else {
-      _settings.add('showPerformanceOverlay');
-    }
+    noteChange('showPerformanceOverlay', v);
   }
 
   ///
@@ -155,10 +158,6 @@ class Settings extends StateXController {
 
     _state?.showSemanticsDebugger = v ?? false;
 
-    if (_settings.contains('showSemanticsDebugger')) {
-      _settings.remove('showSemanticsDebugger');
-    } else {
-      _settings.add('showSemanticsDebugger');
-    }
+    noteChange('showSemanticsDebugger', v);
   }
 }

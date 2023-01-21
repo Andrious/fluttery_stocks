@@ -54,11 +54,14 @@ class Stock {
 ///
 class StockData extends ChangeNotifier {
   ///
-  StockData() {
-    if (actuallyFetchData) {
-      _httpClient = http.Client();
-      _fetchNextChunk();
-    }
+  factory StockData() => _this ??= StockData._();
+  StockData._();
+  static StockData? _this;
+
+  /// Retrieve all the data
+  Future<bool> initAsync() async {
+    await fetchData();
+    return true;
   }
 
   final List<String> _symbols = <String>[];
@@ -94,12 +97,15 @@ class StockData extends ChangeNotifier {
 
   http.Client? _httpClient;
 
-  ///
-  static bool actuallyFetchData = true;
+  /// Retrieve all the data
+  Future<void> fetchData() async {
+    _httpClient = http.Client();
+    await _fetchNextChunk();
+  }
 
-  void _fetchNextChunk() {
+  Future<void> _fetchNextChunk() async {
     _nextChunk++;
-    _httpClient
+    await _httpClient
         //       ?.get(Uri(_urlToFetch(_nextChunk++)))
         ?.get(Uri.https('domokit.github.io',
             'examples/stocks/data/stock_data_$_nextChunk.json'))
@@ -111,7 +117,12 @@ class StockData extends ChangeNotifier {
         return;
       }
       const JsonDecoder decoder = JsonDecoder();
-      add(decoder.convert(json));
+      try {
+        add(decoder.convert(json));
+      } on FormatException catch (e) {
+        // Ignore 'format' exception. It's the header n stuff that's not needed anyway.
+        debugPrint(e.message);
+      }
       if (_nextChunk < _chunkCount) {
         _fetchNextChunk();
       } else {

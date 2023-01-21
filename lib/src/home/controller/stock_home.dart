@@ -21,14 +21,14 @@
 ///
 ///
 ///
-import 'package:flutter/gestures.dart' show DragStartBehavior;
-
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 import 'package:stocks/src/model.dart';
 import 'package:stocks/src/view.dart';
 import 'package:stocks/src/controller.dart';
+
+import 'package:flutter/gestures.dart' show DragStartBehavior;
+
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 ///
 class StockHomeController extends StateXController {
@@ -86,7 +86,7 @@ class StockHomeController extends StateXController {
       title: _widget.appBarTitle,
       actions: <Widget>[
         _widget.search,
-        _widget.popMenu,
+//        _widget.popMenu,
       ],
       bottom: TabBar(
         tabs: <Widget>[
@@ -211,14 +211,22 @@ class StockHomeController extends StateXController {
   }
 
   ///
-  // ignore: use_setters_to_change_properties
   void handleStockModeChange(StockMode? value) {
-    AppStocks.stockMode = value!;
+    if (value != null) {
+      AppStocks.stockMode = value;
+      setState(() {});
+    }
   }
 }
 
 ///
-enum StockHomeTab { market, portfolio }
+enum StockHomeTab {
+  ///
+  market,
+
+  ///
+  portfolio,
+}
 
 class _AppBar {
   _AppBar(this.con) {
@@ -230,7 +238,7 @@ class _AppBar {
         CheckedPopupMenuItem(
           value: _StockMenuItem.autorefresh,
           checked: _autorefresh,
-          child: const Text('Autorefresh'),
+          child: const Text('Auto refresh'),
         ),
         const PopupMenuItem(
           value: _StockMenuItem.refresh,
@@ -478,28 +486,29 @@ class OnTaps {
         }
       };
 
-  ///
-  GestureTapCallback get optimistic => () {
-        con.handleStockModeChange(StockMode.optimistic);
-        con.state?.setState(() {});
-      };
+  // ///
+  // GestureTapCallback get optimistic => () {
+  //       con.handleStockModeChange(StockMode.optimistic);
+  //       con.state?.setState(() {});
+  //     };
+  //
+  // ///
+  // GestureTapCallback get pessimistic => () {
+  //       con.handleStockModeChange(StockMode.pessimistic);
+  //       con.state?.setState(() {});
+  //     };
 
   ///
-  GestureTapCallback get pessimistic => () {
-        con.handleStockModeChange(StockMode.pessimistic);
-        con.state?.setState(() {});
-      };
-
-  ///
-  Future<void> settings(BuildContext context) async {
+  Future<void> devTools(BuildContext context) async {
     await Navigator.popAndPushNamed(context, '/settings');
-    Settings().refresh();
+    DevTools().refresh();
   }
 
   ///
-  void about(BuildContext context) {
-    showAboutDialog(context: context);
-  }
+  void about(BuildContext context) => showAboutDialog(
+        context: context,
+        applicationVersion: 'version: ${App.version} build: ${App.buildNumber}',
+      );
 }
 
 // class _Drawer {
