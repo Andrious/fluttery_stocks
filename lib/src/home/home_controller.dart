@@ -1,2 +1,2 @@
 ///
-export 'package:stocks/src/home/controller/stock_home.dart';
+export 'package:stocks/src/home/controller/home_stocks_controller.dart';

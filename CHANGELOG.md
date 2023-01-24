@@ -1,7 +1,9 @@
-## 1.1.0+01
+
+## 1.1.0+02
 January 20, 2023
 - Decoupled interface code from StockHomeController
 - Change Settings menu to Dev Tools menu
+- Removed commented code
 
 ## 1.0.0
 January 19, 2023

@@ -100,13 +100,17 @@ class StockData extends ChangeNotifier {
   /// Retrieve all the data
   Future<void> fetchData() async {
     _httpClient = http.Client();
-    await _fetchNextChunk();
+    try {
+      await _fetchNextChunk();
+    } catch (e) {
+      // Catch any other errors
+      debugPrint(e.toString());
+    }
   }
 
   Future<void> _fetchNextChunk() async {
     _nextChunk++;
     await _httpClient
-        //       ?.get(Uri(_urlToFetch(_nextChunk++)))
         ?.get(Uri.https('domokit.github.io',
             'examples/stocks/data/stock_data_$_nextChunk.json'))
         .then<void>((http.Response response) {
@@ -116,12 +120,13 @@ class StockData extends ChangeNotifier {
         _end();
         return;
       }
-      const JsonDecoder decoder = JsonDecoder();
       try {
+        const JsonDecoder decoder = JsonDecoder();
         add(decoder.convert(json));
-      } on FormatException catch (e) {
-        // Ignore 'format' exception. It's the header n stuff that's not needed anyway.
-        debugPrint(e.message);
+      } on FormatException catch (ex) {
+        // Ignore 'format' exception.
+        // It's the header n stuff that's not needed anyway.
+        debugPrint(ex.message);
       }
       if (_nextChunk < _chunkCount) {
         _fetchNextChunk();

@@ -9,7 +9,7 @@ import 'package:stocks/src/view.dart';
 import 'package:stocks/src/controller.dart' as c;
 
 ///
-typedef ModeUpdater = void Function(StockMode mode);
+typedef ModeUpdater = void Function(StockMood mode);
 
 ///
 class StockHome extends StatefulWidget {
@@ -27,7 +27,7 @@ class _StockHomeState extends StateX<StockHome> {
     con = controller as c.StockHomeController;
   }
 
-  ///
+  /// The State object's Controller
   late c.StockHomeController con;
 
   @override
@@ -60,6 +60,7 @@ class _StockHomeState extends StateX<StockHome> {
           child: const Icon(Icons.add),
         ),
         drawer: _drawer,
+        onDrawerChanged: con.onDrawerChanged,
         body: TabBarView(
           dragStartBehavior: DragStartBehavior.down,
           children: <Widget>[
@@ -103,43 +104,19 @@ class _StockHomeState extends StateX<StockHome> {
                 leading: const Icon(Icons.dvr),
                 title: const Text('Printout App Information'),
                 onTap: () => _printAppInfo(context),
-                // onTap: () {
-                //   try {
-                //     // Print a string representation of the currently running app.
-                //     debugDumpApp();
-                //     // Prints a textual representation of the entire render tree.
-                //     debugDumpRenderTree();
-                //     // Prints a textual representation of the entire layer tree
-                //     debugDumpLayerTree();
-                //     // Prints a textual representation of the entire semantics tree.
-                //     debugDumpSemanticsTree(
-                //         DebugSemanticsDumpOrder.traversalOrder);
-                //   } catch (e, stack) {
-                //     debugPrint(
-                //         'Exception while printing app info:\n$e\n$stack');
-                //   }
-                // },
               ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.thumb_up),
               title: const Text('Optimistic'),
-              trailing: Radio<StockMode>(
-                value: StockMode.optimistic,
-                groupValue: c.AppStocks.stockMode,
-                onChanged: con.handleStockModeChange,
-              ),
-              onTap: () => con.handleStockModeChange(StockMode.optimistic),
+              trailing: con.widget.optimistic,
+              onTap: con.onTap.optimistic,
             ),
             ListTile(
               leading: const Icon(Icons.thumb_down),
               title: const Text('Pessimistic'),
-              trailing: Radio<StockMode>(
-                value: StockMode.pessimistic,
-                groupValue: c.AppStocks.stockMode,
-                onChanged: con.handleStockModeChange,
-              ),
-              onTap: () => con.handleStockModeChange(StockMode.pessimistic),
+              trailing: con.widget.pessimistic,
+              onTap: con.onTap.pessimistic,
             ),
             const Divider(),
             if (App.inDebugger)
@@ -157,128 +134,6 @@ class _StockHomeState extends StateX<StockHome> {
         ),
       );
 
-  // Widget get _degree01 => DefaultTabController(
-  //       length: 2,
-  //       child: Scaffold(
-  //         drawerDragStartBehavior: DragStartBehavior.down,
-  //         key: con.scaffoldKey,
-  //         appBar: con.widget.appBar,
-  //         floatingActionButton: con.widget.floatingButton.createCompany,
-  //         drawer: Drawer(
-  //           child: ListView(
-  //             dragStartBehavior: DragStartBehavior.down,
-  //             children: <Widget>[
-  //               const DrawerHeader(child: Center(child: Text('Stocks'))),
-  //               const ListTile(
-  //                 leading: Icon(Icons.assessment),
-  //                 title: Text('Stock List'),
-  //                 selected: true,
-  //               ),
-  //               const ListTile(
-  //                 leading: Icon(Icons.account_balance),
-  //                 title: Text('Account Balance'),
-  //                 enabled: false,
-  //               ),
-  //               ListTile(
-  //                 leading: const Icon(Icons.dvr),
-  //                 title: const Text('Dump App to Console'),
-  //                 onTap: con.onTap.dumpConsole,
-  //               ),
-  //               const Divider(),
-  //               ListTile(
-  //                 leading: const Icon(Icons.thumb_up),
-  //                 title: const Text('Optimistic'),
-  //                 trailing: Radio<StockMode>(
-  //                   value: StockMode.optimistic,
-  //                   groupValue: c.AppStocks.stockMode,
-  //                   onChanged: con.handleStockModeChange,
-  //                 ),
-  //                 onTap: con.onTap.optimistic,
-  //               ),
-  //               ListTile(
-  //                 leading: const Icon(Icons.thumb_down),
-  //                 title: const Text('Pessimistic'),
-  //                 trailing: Radio<StockMode>(
-  //                   value: StockMode.pessimistic,
-  //                   groupValue: c.AppStocks.stockMode,
-  //                   onChanged: con.handleStockModeChange,
-  //                 ),
-  //                 onTap: con.onTap.pessimistic,
-  //               ),
-  //               const Divider(),
-  //               ListTile(
-  //                 leading: const Icon(Icons.settings),
-  //                 title: const Text('Settings'),
-  //                 onTap: () {
-  //                   con.onTap.settings(con.context);
-  //                 },
-  //               ),
-  //               ListTile(
-  //                 leading: const Icon(Icons.help),
-  //                 title: const Text('About'),
-  //                 onTap: () {
-  //                   con.onTap.about(con.context);
-  //                 },
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         body: TabBarView(
-  //           dragStartBehavior: DragStartBehavior.down,
-  //           children: <Widget>[
-  //             con.widget.marketTab,
-  //             con.widget.portfolioTab,
-  //           ],
-  //         ),
-  //       ),
-  //     );
-
-  // Widget get _degree02 => DefaultTabController(
-  //       length: 2,
-  //       child: Scaffold(
-  //         drawerDragStartBehavior: DragStartBehavior.down,
-  //         key: con.scaffoldKey,
-  //         appBar: con.widget.appBar,
-  //         floatingActionButton: con.widget.floatingButton.createCompany,
-  //         drawer: Drawer(
-  //           child: ListView(
-  //             dragStartBehavior: DragStartBehavior.down,
-  //             children: <Widget>[
-  //               const DrawerHeader(child: Center(child: Text('Stocks'))),
-  //               con.widget.stockList,
-  //               con.widget.accountBalance,
-  //               con.widget.dumpConsole,
-  //               const Divider(),
-  //               con.widget.optimistic,
-  //               con.widget.pessimistic,
-  //               const Divider(),
-  //               con.widget.settings,
-  //               con.widget.about,
-  //             ],
-  //           ),
-  //         ),
-  //         body: TabBarView(
-  //           dragStartBehavior: DragStartBehavior.down,
-  //           children: <Widget>[
-  //             con.widget.marketTab,
-  //             con.widget.portfolioTab,
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //
-  // Widget get _degree03 => DefaultTabController(
-  //       length: 2,
-  //       child: Scaffold(
-  //         drawerDragStartBehavior: DragStartBehavior.down,
-  //         key: con.scaffoldKey,
-  //         appBar: con.widget.appBar,
-  //         floatingActionButton: con.widget.floatingButton.createCompany,
-  //         drawer: con.widget.drawer,
-  //         body: con.widget.body,
-  //       ),
-  //     );
-
   Future<void> _printAppInfo(BuildContext context) async {
     //
     String infoType = 'app';
@@ -287,6 +142,7 @@ class _StockHomeState extends StateX<StockHome> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
+          final portrait = context.isPortrait;
           App.dependOnInheritedWidget(context);
           return AlertDialog(
             title: Text(
@@ -314,7 +170,7 @@ class _StockHomeState extends StateX<StockHome> {
             content: SizedBox(
               width: 80.w, // % of screen width
               height: 50.h, // % of screen height
-              child: Column(children: [
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Text('Textual representation of this app:'),
                 const Divider(),
                 Flexible(
@@ -322,7 +178,10 @@ class _StockHomeState extends StateX<StockHome> {
                     leading: Radio<String>(
                       value: 'app',
                       groupValue: infoType,
-                      onChanged: (v) => infoType = v!,
+                      onChanged: (v) {
+                        infoType = v!;
+                        App.notifyClients();
+                      },
                     ),
                     title: const Text('App representation'),
                   ),
@@ -332,7 +191,10 @@ class _StockHomeState extends StateX<StockHome> {
                     leading: Radio<String>(
                       value: 'render',
                       groupValue: infoType,
-                      onChanged: (v) => infoType = v!,
+                      onChanged: (v) {
+                        infoType = v!;
+                        App.notifyClients();
+                      },
                     ),
                     title: const Text('Render Tree'),
                   ),
@@ -342,7 +204,10 @@ class _StockHomeState extends StateX<StockHome> {
                     leading: Radio<String>(
                       value: 'layer',
                       groupValue: infoType,
-                      onChanged: (v) => infoType = v!,
+                      onChanged: (v) {
+                        infoType = v!;
+                        App.notifyClients();
+                      },
                     ),
                     title: const Text('Layer Tree'),
                   ),
@@ -352,15 +217,27 @@ class _StockHomeState extends StateX<StockHome> {
                     leading: Radio<String>(
                       value: 'semantics',
                       groupValue: infoType,
-                      onChanged: (v) => infoType = v!,
+                      onChanged: (v) {
+                        infoType = v!;
+                        App.notifyClients();
+                      },
                     ),
                     title: const Text('Semantics Tree'),
                   ),
                 ),
-                const Text('To view Log In Android Studio:'),
-                const Text('Help Menu -> Show log in Explorer (for Windows)'),
-                const Text('Help Menu -> Show log in Finder (for Mac users)'),
-                const Text('OUTPUTS ALSO TO CONSOLE'),
+                const Divider(),
+                if (portrait)
+                  const Flexible(child: Text('To view Log In Android Studio:')),
+                if (portrait)
+                  const Flexible(
+                      child: Text(
+                          'Help Menu -> Show log in Explorer (for Windows)')),
+                if (portrait)
+                  const Flexible(
+                      child: Text(
+                          'Help Menu -> Show log in Finder (for Mac users)')),
+                if (portrait)
+                  const Flexible(child: Text('OUTPUTS ALSO TO CONSOLE')),
               ]),
             ),
           );
@@ -402,5 +279,42 @@ class _StockHomeState extends StateX<StockHome> {
     } catch (e, stack) {
       debugPrint('Exception while printing app info:\n$e\n$stack');
     }
+  }
+}
+
+/// Displayed in segments of the App not yet finished.
+class NotImplementedDialog extends StatelessWidget {
+  ///
+  const NotImplementedDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Not Implemented'),
+      content: const Text('This feature has not yet been implemented.'),
+      actions: <Widget>[
+        ElevatedButton(
+          onPressed: debugDumpApp,
+          child: Row(
+            children: <Widget>[
+              const Icon(
+                Icons.dvr,
+                size: 18,
+              ),
+              Container(
+                width: 8,
+              ),
+              const Text('DUMP APP TO CONSOLE'),
+            ],
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          child: const Text('OH WELL'),
+        ),
+      ],
+    );
   }
 }

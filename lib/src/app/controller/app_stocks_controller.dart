@@ -7,37 +7,58 @@ class AppStocks extends AppController {
   ///
   factory AppStocks([StateX? state]) => _this ??= AppStocks._(state);
   AppStocks._([StateX? state]) : super(state) {
-    _stocks = StockData();
+    _stocksData = StockData();
   }
   static AppStocks? _this;
 
   @override
   Future<bool> initAsync() async {
     // Retrieve its data
-    return _stocks.initAsync();
+    return _stocksData.initAsync();
   }
 
   @override
   void initState() {
     super.initState();
-    _state = state as AppState;
+    _appState = state as AppState;
+    // Initial the general theme of the app
+    _initStockMood();
   }
 
-  static AppState? _state;
+  // The App's first State object
+  static AppState? _appState;
 
   ///
-  static StockData get stocks => _stocks;
-  static late StockData _stocks;
+  StockData get stocksData => _stocksData;
+  late StockData _stocksData;
+
+  // Initialize a mode
+  void _initStockMood() {
+    final mode = Prefs.getString('StockMood', 'optimistic');
+    stockMood =
+        mode == 'optimistic' ? StockMood.optimistic : StockMood.pessimistic;
+  }
 
   ///
-  static ThemeData get theme {
-    switch (stockMode) {
-      case StockMode.optimistic:
+  StockMood get stockMood => _mood;
+  set stockMood(StockMood v) {
+    _mood = v;
+    // The App's State object can define the theme
+    _appState?.theme = theme;
+    _appState?.refresh();
+  }
+
+  StockMood _mood = StockMood.optimistic;
+
+  ///
+  ThemeData get theme {
+    switch (stockMood) {
+      case StockMood.optimistic:
         return ThemeData(
           brightness: Brightness.light,
           primarySwatch: Colors.purple,
         );
-      case StockMode.pessimistic:
+      case StockMood.pessimistic:
         final theme = ThemeData(
           brightness: Brightness.dark,
         );
@@ -45,30 +66,13 @@ class AppStocks extends AppController {
           colorScheme: theme.colorScheme.copyWith(secondary: Colors.redAccent),
         );
     }
-//    return null;
   }
-
-  ///
-  static set theme(ThemeData v) {
-    _state?.theme = v;
-    _state?.refresh();
-  }
-
-  ///
-  static StockMode get stockMode => _stockMode;
-  static set stockMode(StockMode v) {
-    _stockMode = v;
-    _state?.theme = theme;
-    _state?.refresh();
-  }
-
-  static StockMode _stockMode = StockMode.optimistic;
 
   ///
   static BackupMode get backupMode => _backupMode;
   static set backupMode(BackupMode v) {
     _backupMode = v;
-    _state?.refresh();
+    _appState?.refresh();
   }
 
   static BackupMode _backupMode = BackupMode.enabled;
@@ -78,8 +82,8 @@ class AppStocks extends AppController {
       _StocksLocalizationsDelegate();
 
   ///
-  static StockSymbolPage symbolPage({required String symbol}) =>
-      StockSymbolPage(symbol: symbol, stocks: AppStocks.stocks);
+  StockSymbolPage symbolPage({required String symbol}) =>
+      StockSymbolPage(symbol: symbol, stocks: stocksData);
 }
 
 class _StocksLocalizationsDelegate extends LocalizationsDelegate<StockStrings> {

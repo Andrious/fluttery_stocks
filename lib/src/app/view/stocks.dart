@@ -18,7 +18,6 @@ class _StocksApp extends AppState<MyApp> {
       : super(
           controller: AppStocks(),
           title: 'Stocks',
-          theme: AppStocks.theme,
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
             AppStocks.localizationsDelegate,
             GlobalMaterialLocalizations.delegate,
@@ -43,8 +42,8 @@ class _StocksApp extends AppState<MyApp> {
               final Object? symbol = settings.arguments;
               return MaterialPageRoute<void>(
                 settings: settings,
-                builder: (BuildContext context) =>
-                    AppStocks.symbolPage(symbol: symbol as String),
+                builder: (BuildContext context) => (controller as AppStocks)
+                    .symbolPage(symbol: symbol as String),
               );
             }
             // The other paths we support are in the routes table.

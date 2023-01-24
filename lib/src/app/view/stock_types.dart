@@ -4,7 +4,8 @@
 
 //import 'package:flutter/foundation.dart';
 
-enum StockMode { optimistic, pessimistic }
+enum StockMood { optimistic, pessimistic }
+
 enum BackupMode { enabled, disabled }
 
 //class StockConfiguration {
