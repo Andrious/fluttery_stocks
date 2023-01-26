@@ -60,7 +60,6 @@ class _StockHomeState extends StateX<StockHome> {
           child: const Icon(Icons.add),
         ),
         drawer: _drawer,
-        onDrawerChanged: con.onDrawerChanged,
         body: TabBarView(
           dragStartBehavior: DragStartBehavior.down,
           children: <Widget>[

@@ -180,12 +180,6 @@ class StockHomeController extends StateXController {
     return stocks.where((Stock stock) => stock.symbol.contains(regexp));
   }
 
-  /// Called when the App's Drawer is opened or closed
-  // ignore: avoid_positional_boolean_parameters
-  void onDrawerChanged(bool isOpened) {
-    if (!isOpened) {}
-  }
-
   ///
   void onChange(StockMood? value) {
     if (value != null) {

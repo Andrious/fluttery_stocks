@@ -23,10 +23,7 @@ class ControllerMethods {
       };
 
   ///
-  Future<void> devTools(BuildContext context) async {
-    await Navigator.popAndPushNamed(context, '/settings');
-    DevTools().refresh();
-  }
+  void devTools(BuildContext context) => DevTools().routeSettings(context);
 
   ///
   void about(BuildContext context) => showAboutDialog(

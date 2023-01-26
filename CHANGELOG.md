@@ -1,4 +1,8 @@
 
+## 1.1.0+03
+January 26, 2023
+- devTools(BuildContext context) => DevTools().routeSettings(context);
+
 ## 1.1.0+02
 January 20, 2023
 - Decoupled interface code from StockHomeController

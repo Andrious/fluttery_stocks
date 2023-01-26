@@ -21,6 +21,12 @@ class DevTools extends StateXController {
   // The App's State object
   AppState? _state;
 
+  /// Navigates to the Settings Route
+  Future<void> routeSettings(BuildContext context) async {
+    await Navigator.popAndPushNamed(context, '/settings');
+    setChanges();
+  }
+
   // Indicates which settings have changed.
   final _settings = <String>{};
 
@@ -32,12 +38,12 @@ class DevTools extends StateXController {
   }
 
   /// Refresh the app if the settings have changed.
-  bool refresh() {
-    final refreshed = isChanged();
-    if (refreshed && _state != null) {
+  bool setChanges() {
+    final changed = isChanged();
+    if (changed && _state != null) {
       _state?.setState(() {});
     }
-    return refreshed;
+    return changed;
   }
 
   /// Record the current switch setting

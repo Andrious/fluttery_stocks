@@ -42,17 +42,6 @@ class _StockSettingsState extends StateX<StockSettings> {
         onTap: _con.onTap.confirmToOptimistic,
         trailing: _con.widget.toOptimistic,
       ),
-      // ListTile(
-      //   leading: const Icon(Icons.backup),
-      //   title: const Text('Back up stock list to the cloud'),
-      //   onTap: () {
-      //     _handleBackupChanged(!(AppStocks.backupMode == BackupMode.enabled));
-      //   },
-      //   trailing: Switch(
-      //     value: AppStocks.backupMode == BackupMode.enabled,
-      //     onChanged: _handleBackupChanged,
-      //   ),
-      // ),
       ListTile(
         leading: const Icon(Icons.picture_in_picture),
         title: const Text('Show rendering performance overlay'),
