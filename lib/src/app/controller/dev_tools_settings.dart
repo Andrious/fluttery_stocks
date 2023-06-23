@@ -14,7 +14,7 @@ class DevTools extends StateXController {
   @override
   void initState() {
     super.initState();
-    _state ??= App.state;
+    _state ??= App.appState;
     _settings.clear();
   }
 

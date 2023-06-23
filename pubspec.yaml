@@ -5,10 +5,10 @@ description: The Stocks Sample App using the Fluttery Framework.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.0+03
+version: 1.2.0
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.18.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -17,7 +17,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.0
 
   flutter:
     sdk: flutter
@@ -25,16 +25,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  fluttery_framework: #^1.0.0
-    path: ../../packages/fluttery_framework
+  fluttery_framework: ^4.0.0
+#    path: ../../packages/fluttery_framework
 
-  http: # 0.12.0+2
+  http: ^1.0.0
 
-  intl: # 0.15.8
+  intl: ^0.18.0
 
-  intl_translation: # 0.17.5
-
-  isolate: # 2.0.2
+  intl_translation: ^0.18.0
 
 dev_dependencies:
 

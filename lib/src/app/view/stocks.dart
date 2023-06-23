@@ -6,15 +6,14 @@ import 'package:stocks/src/controller.dart';
 class MyApp extends AppStatefulWidget {
   ///
   MyApp({super.key});
-
   @override
-  AppState<StatefulWidget> createAppState() => _StocksApp();
+  AppState<StatefulWidget> createAppState() => _StocksAppState();
 }
 
 /// The State object for the Application
-class _StocksApp extends AppState<MyApp> {
+class _StocksAppState extends AppState<MyApp> {
   /// Supply the 'look and behavior' of the application
-  _StocksApp()
+  _StocksAppState()
       : super(
           controller: AppStocks(),
           title: 'Stocks',

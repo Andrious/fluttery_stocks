@@ -23,7 +23,7 @@ class StockHome extends StatefulWidget {
 ///
 class _StockHomeState extends StateX<StockHome> {
   ///
-  _StockHomeState() : super(c.StockHomeController()) {
+  _StockHomeState() : super(controller: c.StockHomeController()) {
     con = controller as c.StockHomeController;
   }
 
@@ -31,7 +31,7 @@ class _StockHomeState extends StateX<StockHome> {
   late c.StockHomeController con;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildAndroid(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -44,8 +44,8 @@ class _StockHomeState extends StateX<StockHome> {
           onPressed: () {
             showModalBottomSheet<void>(
               context: context,
-              builder: (BuildContext context) => Column(
-                children: const <Widget>[
+              builder: (BuildContext context) => const Column(
+                children: <Widget>[
                   TextField(
                     autofocus: true,
                     decoration: InputDecoration(
@@ -84,7 +84,7 @@ class _StockHomeState extends StateX<StockHome> {
               child: Center(
                 child: Text(
                   'Stocks',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
             ),
@@ -98,7 +98,7 @@ class _StockHomeState extends StateX<StockHome> {
               title: Text('Account Balance'),
               enabled: false,
             ),
-            if (App.inDebugger) // Display only on the developer's computer.
+            if (App.inDebugMode) // Display only on the developer's computer.
               ListTile(
                 leading: const Icon(Icons.dvr),
                 title: const Text('Printout App Information'),
@@ -118,7 +118,7 @@ class _StockHomeState extends StateX<StockHome> {
               onTap: con.onTap.pessimistic,
             ),
             const Divider(),
-            if (App.inDebugger)
+            if (App.inDebugMode)
               ListTile(
                 leading: const Icon(Icons.settings),
                 title: const Text('Debug Tools'),
@@ -146,7 +146,7 @@ class _StockHomeState extends StateX<StockHome> {
           return AlertDialog(
             title: Text(
               'App Info',
-              style: Theme.of(context).textTheme.headline3,
+              style: Theme.of(context).textTheme.displaySmall,
             ),
             titlePadding: const EdgeInsets.only(left: 10, top: 20),
             contentPadding: const EdgeInsets.all(20),

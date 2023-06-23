@@ -1,4 +1,8 @@
 
+## 1.2.0
+June 22, 2023
+- Updated Flutter and Fluttery Framework
+
 ## 1.1.0+03
 January 26, 2023
 - devTools(BuildContext context) => DevTools().routeSettings(context);

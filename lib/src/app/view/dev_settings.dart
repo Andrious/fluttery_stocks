@@ -13,7 +13,7 @@ class StockSettings extends StatefulWidget {
 
 ///
 class _StockSettingsState extends StateX<StockSettings> {
-  _StockSettingsState() : super(DevTools()) {
+  _StockSettingsState() : super(controller: DevTools()) {
     con = controller as DevTools;
   }
   late DevTools con;
@@ -22,7 +22,7 @@ class _StockSettingsState extends StateX<StockSettings> {
   bool changed = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Development Tools'),
