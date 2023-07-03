@@ -31,6 +31,10 @@ class _StockSettingsState extends StateX<StockSettings> {
     );
   }
 
+  // The Cupertino interface was not implemented.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
+
   ///
   ListView _buildSettingsPane(BuildContext context) {
     final _con = StockHomeController();

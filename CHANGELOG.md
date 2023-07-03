@@ -1,5 +1,5 @@
 
-## 1.2.0
+## 1.2.0+01
 June 22, 2023
 - Updated Flutter and Fluttery Framework
 

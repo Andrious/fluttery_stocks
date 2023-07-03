@@ -279,6 +279,10 @@ class _StockHomeState extends StateX<StockHome> {
       debugPrint('Exception while printing app info:\n$e\n$stack');
     }
   }
+
+  // The Cupertino interface was not implemented.
+  @override
+  Widget buildiOS(BuildContext context) => buildAndroid(context);
 }
 
 /// Displayed in segments of the App not yet finished.
