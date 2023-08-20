@@ -25,8 +25,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  fluttery_framework: ^4.0.0
-#    path: ../../packages/fluttery_framework
+  fluttery_framework: #^4.0.0
+    path: ../../packages/fluttery_framework
 
   http: ^1.0.0
 

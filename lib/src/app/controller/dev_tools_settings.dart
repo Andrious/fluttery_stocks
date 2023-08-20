@@ -68,7 +68,8 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugShowCheckedModeBanner => _state?.debugShowCheckedModeBanner;
+  bool? get debugShowCheckedModeBanner =>
+      _state?.debugShowCheckedModeBanner ?? true;
   set debugShowCheckedModeBanner(bool? v) {
     //
     setState(() {});
@@ -79,7 +80,7 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugShowMaterialGrid => _state?.debugShowMaterialGrid;
+  bool? get debugShowMaterialGrid => _state?.debugShowMaterialGrid ?? false;
   set debugShowMaterialGrid(bool? v) {
     //
     setState(() {});
@@ -90,7 +91,7 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugPaintSizeEnabled => _state?.debugPaintSizeEnabled;
+  bool? get debugPaintSizeEnabled => _state?.debugPaintSizeEnabled ?? false;
   set debugPaintSizeEnabled(bool? v) {
     //
     setState(() {});
@@ -101,7 +102,8 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugPaintBaselinesEnabled => _state?.debugPaintBaselinesEnabled;
+  bool? get debugPaintBaselinesEnabled =>
+      _state?.debugPaintBaselinesEnabled ?? false;
   set debugPaintBaselinesEnabled(bool? v) {
     //
     setState(() {});
@@ -113,7 +115,7 @@ class DevTools extends StateXController {
 
   ///
   bool? get debugPaintLayerBordersEnabled =>
-      _state?.debugPaintLayerBordersEnabled;
+      _state?.debugPaintLayerBordersEnabled ?? false;
   set debugPaintLayerBordersEnabled(bool? v) {
     //
     setState(() {});
@@ -124,7 +126,8 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugPaintPointersEnabled => _state?.debugPaintPointersEnabled;
+  bool? get debugPaintPointersEnabled =>
+      _state?.debugPaintPointersEnabled ?? false;
   set debugPaintPointersEnabled(bool? v) {
     //
     setState(() {});
@@ -135,7 +138,8 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get debugRepaintRainbowEnabled => _state?.debugRepaintRainbowEnabled;
+  bool? get debugRepaintRainbowEnabled =>
+      _state?.debugRepaintRainbowEnabled ?? false;
   set debugRepaintRainbowEnabled(bool? v) {
     //
     setState(() {});
@@ -146,7 +150,7 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get showPerformanceOverlay => _state?.showPerformanceOverlay;
+  bool? get showPerformanceOverlay => _state?.showPerformanceOverlay ?? false;
   set showPerformanceOverlay(bool? v) {
     //
     setState(() {});
@@ -157,7 +161,7 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get showSemanticsDebugger => _state?.showSemanticsDebugger;
+  bool? get showSemanticsDebugger => _state?.showSemanticsDebugger ?? false;
   set showSemanticsDebugger(bool? v) {
     //
     setState(() {});

@@ -1,4 +1,8 @@
 
+## 1.2.1
+August 19, 2023
+- Update to accept the Fluttery Framework v.4.3.0 
+
 ## 1.2.0+01
 June 22, 2023
 - Updated Flutter and Fluttery Framework

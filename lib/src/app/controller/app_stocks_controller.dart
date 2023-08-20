@@ -44,7 +44,8 @@ class AppStocks extends AppController {
   set stockMood(StockMood v) {
     _mood = v;
     // The App's State object can define the theme
-    _appState?.theme = theme;
+//    _appState?.theme = theme;
+    App.themeData = theme;
     _appState?.refresh();
   }
 
