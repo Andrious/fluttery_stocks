@@ -20,7 +20,7 @@ class AppStocks extends AppStateXController {
   @override
   void initState() {
     super.initState();
-    _appState = state as AppStateX;
+    _appState = appState;
     // Initial the general theme of the app
     _initStockMood();
   }
@@ -44,7 +44,6 @@ class AppStocks extends AppStateXController {
   set stockMood(StockMood v) {
     _mood = v;
     // The App's State object can define the theme
-//    _appState?.theme = theme;
     App.themeData = theme;
     _appState?.refresh();
   }

@@ -17,6 +17,10 @@ class _StocksAppState extends AppStateX<MyApp> {
       : super(
           controller: AppStocks(),
           title: 'Stocks',
+          errorHandler: AppErrorHandler.errorHandler,
+          errorScreen: AppErrorHandler.displayErrorWidget,
+          inUnknownRoute: AppErrorHandler.onUnknownRoute,
+          allowChangeTheme: true,
           localizationsDelegates: <LocalizationsDelegate<dynamic>>[
             AppStocks.localizationsDelegate,
             GlobalMaterialLocalizations.delegate,
@@ -48,4 +52,23 @@ class _StocksAppState extends AppStateX<MyApp> {
             // The other paths we support are in the routes table.
             return null;
           };
+
+  @override
+  bool onShowPerformanceOverlay() => DevTools().showPerformanceOverlay;
+  @override
+  bool onShowSemanticsDebugger() => DevTools().showSemanticsDebugger;
+  @override
+  bool onDebugShowCheckedModeBanner() => DevTools().debugShowCheckedModeBanner;
+  @override
+  bool onDebugShowMaterialGrid() => DevTools().debugShowMaterialGrid;
+  @override
+  bool onDebugPaintSizeEnabled() => DevTools().debugPaintSizeEnabled;
+  @override
+  bool onDebugPaintLayerBordersEnabled() => DevTools().debugPaintLayerBordersEnabled;
+  @override
+  bool onDebugPaintBaselinesEnabled() => DevTools().debugPaintBaselinesEnabled;
+  @override
+  bool onDebugPaintPointersEnabled() => DevTools().debugPaintPointersEnabled;
+  @override
+  bool onDebugRepaintRainbowEnabled() => DevTools().debugRepaintRainbowEnabled;
 }

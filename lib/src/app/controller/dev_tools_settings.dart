@@ -15,7 +15,6 @@ class DevTools extends StateXController {
   void initState() {
     super.initState();
     _state ??= App.appState;
-    _settings.clear();
   }
 
   // The App's State object
@@ -24,154 +23,172 @@ class DevTools extends StateXController {
   /// Navigates to the Settings Route
   Future<void> routeSettings(BuildContext context) async {
     await Navigator.popAndPushNamed(context, '/settings');
-    setChanges();
-  }
-
-  // Indicates which settings have changed.
-  final _settings = <String>{};
-
-  /// The settings were changed
-  bool isChanged() {
-    final changed = _settings.isNotEmpty;
-    _settings.clear();
-    return changed;
-  }
-
-  /// Refresh the app if the settings have changed.
-  bool setChanges() {
-    final changed = isChanged();
-    if (changed && _state != null) {
-      _state?.setState(() {});
-    }
-    return changed;
-  }
-
-  /// Record the current switch setting
-  // ignore: avoid_positional_boolean_parameters
-  bool noteChange(String switchName, bool? switchValue) {
-    final noted = switchValue != null;
-    if (noted) {
-      //
-      if (_settings.contains(switchName)) {
-        _settings.remove(switchName);
-      } else {
-        _settings.add(switchName);
-      }
-      // If the setting was on and running but now turned off
-      if (switchValue == false && _settings.contains(switchName)) {
-        _settings.remove(switchName);
-        // Refresh the app now to rid of any debug displays
-        _state?.setState(() {});
-      }
-    }
-    return noted;
   }
 
   ///
-  bool? get debugShowCheckedModeBanner =>
-      _debugShowCheckedModeBanner;
+  bool get debugShowCheckedModeBanner =>
+      _debugShowCheckedModeBanner ??
+      Prefs.getBool('debugShowCheckedModeBanner', false);
   set debugShowCheckedModeBanner(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugShowCheckedModeBanner', v);
 
-    _debugShowCheckedModeBanner = v ?? false;
+      setState(() {});
 
-    noteChange('debugShowCheckedModeBanner', v);
+      _debugShowCheckedModeBanner = v;
+
+      _state?.setState(() {});
+    }
   }
-   var _debugShowCheckedModeBanner = false;
+
+  bool? _debugShowCheckedModeBanner;
 
   ///
-  bool? get debugShowMaterialGrid => _debugShowMaterialGrid ?? false;
+  bool get debugShowMaterialGrid =>
+      _debugShowMaterialGrid ?? Prefs.getBool('debugShowMaterialGrid', false);
   set debugShowMaterialGrid(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugShowMaterialGrid', v);
 
-    _debugShowMaterialGrid = v ?? false;
+      setState(() {});
 
-    noteChange('debugShowMaterialGrid', v);
+      _debugShowMaterialGrid = v;
+
+      _state?.setState(() {});
+    }
   }
-  var _debugShowMaterialGrid = false;
+
+  bool? _debugShowMaterialGrid;
 
   ///
-  bool? get debugPaintSizeEnabled => _state?.debugPaintSizeEnabled ?? false;
+  bool get debugPaintSizeEnabled =>
+      _state?.debugPaintSizeEnabled ??
+      Prefs.getBool('debugPaintSizeEnabled', false);
   set debugPaintSizeEnabled(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintSizeEnabled', v);
 
-    _state?.debugPaintSizeEnabled = v ?? false;
+      setState(() {});
 
-    noteChange('debugPaintSizeEnabled', v);
+      _state?.debugPaintSizeEnabled = v;
+
+      _state?.setState(() {});
+    }
   }
 
   ///
-  bool? get debugPaintBaselinesEnabled =>
-      _state?.debugPaintBaselinesEnabled ?? false;
+  bool get debugPaintBaselinesEnabled =>
+      _state?.debugPaintBaselinesEnabled ??
+      Prefs.getBool('debugPaintBaselinesEnabled', false);
   set debugPaintBaselinesEnabled(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintBaselinesEnabled', v);
 
-    _state?.debugPaintBaselinesEnabled = v ?? false;
+      setState(() {});
 
-    noteChange('debugPaintBaselinesEnabled', v);
+      _state?.debugPaintBaselinesEnabled = v;
+
+      _state?.setState(() {});
+    }
   }
 
   ///
-  bool? get debugPaintLayerBordersEnabled =>
-      _state?.debugPaintLayerBordersEnabled ?? false;
+  bool get debugPaintLayerBordersEnabled =>
+      _state?.debugPaintLayerBordersEnabled ??
+      Prefs.getBool('debugPaintLayerBordersEnabled', false);
   set debugPaintLayerBordersEnabled(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintLayerBordersEnabled', v);
 
-    _state?.debugPaintLayerBordersEnabled = v ?? false;
+      setState(() {});
 
-    noteChange('debugPaintLayerBordersEnabled', v);
+      _state?.debugPaintLayerBordersEnabled = v;
+
+      _state?.setState(() {});
+    }
   }
 
   ///
-  bool? get debugPaintPointersEnabled =>
-      _state?.debugPaintPointersEnabled ?? false;
+  bool get debugPaintPointersEnabled =>
+      _state?.debugPaintPointersEnabled ??
+      Prefs.getBool('debugPaintPointersEnabled', false);
   set debugPaintPointersEnabled(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugPaintPointersEnabled', v);
 
-    _state?.debugPaintPointersEnabled = v ?? false;
+      setState(() {});
 
-    noteChange('debugPaintPointersEnabled', v);
+      _state?.debugPaintPointersEnabled = v;
+
+      _state?.setState(() {});
+    }
   }
 
   ///
-  bool? get debugRepaintRainbowEnabled =>
-      _state?.debugRepaintRainbowEnabled ?? false;
+  bool get debugRepaintRainbowEnabled =>
+      _state?.debugRepaintRainbowEnabled ??
+      Prefs.getBool('debugRepaintRainbowEnabled', false);
   set debugRepaintRainbowEnabled(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('debugRepaintRainbowEnabled', v);
 
-    _state?.debugRepaintRainbowEnabled = v ?? false;
+      setState(() {});
 
-    noteChange('debugRepaintRainbowEnabled', v);
+      _state?.debugRepaintRainbowEnabled = v;
+
+      _state?.setState(() {});
+    }
   }
 
   ///
-  bool? get showPerformanceOverlay => _showPerformanceOverlay ?? false;
+  bool get showPerformanceOverlay =>
+      _showPerformanceOverlay ?? Prefs.getBool('showPerformanceOverlay', false);
   set showPerformanceOverlay(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('showPerformanceOverlay', v);
 
-    _showPerformanceOverlay = v ?? false;
+      setState(() {});
 
-    noteChange('showPerformanceOverlay', v);
+      _showPerformanceOverlay = v;
+
+      _state?.setState(() {});
+    }
   }
-  var _showPerformanceOverlay = false;
+
+  bool? _showPerformanceOverlay;
 
   ///
-  bool? get showSemanticsDebugger => _showSemanticsDebugger ?? false;
+  bool get showSemanticsDebugger =>
+      _showSemanticsDebugger ?? Prefs.getBool('showSemanticsDebugger', false);
   set showSemanticsDebugger(bool? v) {
     //
-    setState(() {});
+    if (v != null) {
+      //
+      Prefs.setBool('showSemanticsDebugger', v);
 
-    _showSemanticsDebugger = v ?? false;
+      setState(() {});
 
-    noteChange('showSemanticsDebugger', v);
+      _showSemanticsDebugger = v;
+
+      _state?.setState(() {});
+    }
   }
-  var _showSemanticsDebugger = false;
+
+  bool? _showSemanticsDebugger;
 }
