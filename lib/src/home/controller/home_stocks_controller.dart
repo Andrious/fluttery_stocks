@@ -143,7 +143,7 @@ class StockHomeController extends StateXController {
         Navigator.pushNamed(context, '/stock', arguments: stock.symbol);
       },
       onShow: (Stock stock) {
-        scaffoldKey.currentState?.showBottomSheet<void>(
+        scaffoldKey.currentState?.showBottomSheet(
             (BuildContext context) => StockSymbolBottomSheet(stock: stock));
       },
     );

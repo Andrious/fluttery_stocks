@@ -3,7 +3,7 @@ import 'package:stocks/src/view.dart';
 import 'package:stocks/src/controller.dart';
 
 ///
-class AppStocks extends AppController {
+class AppStocks extends AppStateXController {
   ///
   factory AppStocks([StateX? state]) => _this ??= AppStocks._(state);
   AppStocks._([StateX? state]) : super(state) {
@@ -20,13 +20,13 @@ class AppStocks extends AppController {
   @override
   void initState() {
     super.initState();
-    _appState = state as AppState;
+    _appState = state as AppStateX;
     // Initial the general theme of the app
     _initStockMood();
   }
 
   // The App's first State object
-  static AppState? _appState;
+  static AppStateX? _appState;
 
   ///
   StockData get stocksData => _stocksData;

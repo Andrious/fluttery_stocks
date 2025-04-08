@@ -136,12 +136,11 @@ class _StockHomeState extends StateX<StockHome> {
   Future<void> _printAppInfo(BuildContext context) async {
     //
     String infoType = 'app';
-
+    final portrait = MediaQuery.of(context).orientation == Orientation.portrait;
     final info = await showDialog<String>(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          final portrait = context.isPortrait;
           App.dependOnInheritedWidget(context);
           return AlertDialog(
             title: Text(

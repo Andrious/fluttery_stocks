@@ -19,7 +19,7 @@ class DevTools extends StateXController {
   }
 
   // The App's State object
-  AppState? _state;
+  AppStateX? _state;
 
   /// Navigates to the Settings Route
   Future<void> routeSettings(BuildContext context) async {
@@ -69,26 +69,28 @@ class DevTools extends StateXController {
 
   ///
   bool? get debugShowCheckedModeBanner =>
-      _state?.debugShowCheckedModeBanner ?? true;
+      _debugShowCheckedModeBanner;
   set debugShowCheckedModeBanner(bool? v) {
     //
     setState(() {});
 
-    _state?.debugShowCheckedModeBanner = v ?? false;
+    _debugShowCheckedModeBanner = v ?? false;
 
     noteChange('debugShowCheckedModeBanner', v);
   }
+   var _debugShowCheckedModeBanner = false;
 
   ///
-  bool? get debugShowMaterialGrid => _state?.debugShowMaterialGrid ?? false;
+  bool? get debugShowMaterialGrid => _debugShowMaterialGrid ?? false;
   set debugShowMaterialGrid(bool? v) {
     //
     setState(() {});
 
-    _state?.debugShowMaterialGrid = v ?? false;
+    _debugShowMaterialGrid = v ?? false;
 
     noteChange('debugShowMaterialGrid', v);
   }
+  var _debugShowMaterialGrid = false;
 
   ///
   bool? get debugPaintSizeEnabled => _state?.debugPaintSizeEnabled ?? false;
@@ -150,24 +152,26 @@ class DevTools extends StateXController {
   }
 
   ///
-  bool? get showPerformanceOverlay => _state?.showPerformanceOverlay ?? false;
+  bool? get showPerformanceOverlay => _showPerformanceOverlay ?? false;
   set showPerformanceOverlay(bool? v) {
     //
     setState(() {});
 
-    _state?.showPerformanceOverlay = v ?? false;
+    _showPerformanceOverlay = v ?? false;
 
     noteChange('showPerformanceOverlay', v);
   }
+  var _showPerformanceOverlay = false;
 
   ///
-  bool? get showSemanticsDebugger => _state?.showSemanticsDebugger ?? false;
+  bool? get showSemanticsDebugger => _showSemanticsDebugger ?? false;
   set showSemanticsDebugger(bool? v) {
     //
     setState(() {});
 
-    _state?.showSemanticsDebugger = v ?? false;
+    _showSemanticsDebugger = v ?? false;
 
     noteChange('showSemanticsDebugger', v);
   }
+  var _showSemanticsDebugger = false;
 }

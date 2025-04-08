@@ -7,11 +7,11 @@ class MyApp extends AppStatefulWidget {
   ///
   MyApp({super.key});
   @override
-  AppState<StatefulWidget> createAppState() => _StocksAppState();
+  AppStateX<StatefulWidget> createAppState() => _StocksAppState();
 }
 
 /// The State object for the Application
-class _StocksAppState extends AppState<MyApp> {
+class _StocksAppState extends AppStateX<MyApp> {
   /// Supply the 'look and behavior' of the application
   _StocksAppState()
       : super(
